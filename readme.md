@@ -1,5 +1,4 @@
-PN Stat
-=======
+# PN Stat
 
 A short daemon for monitoring and logging certain Linux values. I created this
 program to run as a daemon to monitor my EEE-PC Arch-Linux torrent seedbox. It's
@@ -9,27 +8,26 @@ and write them to the log files. No processing whatsoever.
 It's so lightweight that the only way to configure it for your system is to edit
 the macros in the C source file. (2013 note: this made be laugh.)
 
-The log file structure
-----------------------
+## The log file structure
 
 When the program starts a new header is added which looks like this:
 
     =mem_free;mem_total;bat_last_full;fan_speed
-    
+
 It starts adding values separated by `;`:
 
     1800000;2000000;1000;1500
-    
+
 When a new line is added, if the last value is identical, the value will be
 replaced with a null string:
 
     1800100;;1001;    - means 1800100;2000000;1001;1500
-    
+
 Except that the last `;` are eliminated. So if just the `bat_last_full` changes
 the line will be:
 
     ;;1001
-    
+
 This is why the values should be arranged by their likelihood of changing. The
 most variable being first.
 
@@ -44,8 +42,7 @@ the headers is to indicate to the program that does the processing what the
 values mean. So they are only written at startup because the values may change
 because if the program is modified and recompiled.
 
-How to process the logs
------------------------
+## How to process the logs
 
 To generate the full log you concatenate the log files in order and then add the
 `log` file (so `log000002`, `log000003`, and `log`).
@@ -62,23 +59,22 @@ might be new ones.
 Python example of processing:
 
 ```python
-    # This dictionary will contain the list of values for each of the column names.
-    valuesDict = {}
-    headers = None
+# This dictionary will contain the list of values for each of the column names.
+valuesDict = {}
+headers = None
 
-    def aNewLine(line):
-        if line.startswith("="):
-            headers = line[1:].split(";")
-        else:
-            values = line.split(";")
-            for i in xrange(len(values)):
-                try:
-                    vect = valuesDict[headers[i]]
-                    vect.append(values[i])
-                except KeyError:
-                    vect = [values[i]]
-                    valuesDict[headers[i]] = vect
-                if vect[-1] == "":
-                    vect[-1] = vect[-2]
+def aNewLine(line):
+    if line.startswith("="):
+        headers = line[1:].split(";")
+    else:
+        values = line.split(";")
+        for i in xrange(len(values)):
+            try:
+                vect = valuesDict[headers[i]]
+                vect.append(values[i])
+            except KeyError:
+                vect = [values[i]]
+                valuesDict[headers[i]] = vect
+            if vect[-1] == "":
+                vect[-1] = vect[-2]
 ```
-
