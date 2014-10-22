@@ -5,6 +5,8 @@ program to run as a daemon to monitor my EEE-PC Arch-Linux torrent seedbox. It's
 supposed to be very, very lightweight. It's purpose is to collect the raw values
 and write them to the log files. No processing whatsoever.
 
+![PN Stat cover image.](screenshot.png)
+
 It's so lightweight that the only way to configure it for your system is to edit
 the macros in the C source file. (2013 note: this made be laugh.)
 
