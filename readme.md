@@ -1,3 +1,7 @@
+# This repository has been moved to [gitlab.com/paul-nechifor/pnstat](http://gitlab.com/paul-nechifor/pnstat).
+
+Old readme:
+
 # PN Stat
 
 A short daemon for monitoring and logging certain Linux values. I created this
